@@ -1,0 +1,61 @@
+POST http://127.0.0.1:8000/signup 
+Content-Type: application/json
+
+{ "name": "adam2", "password": "Pass1234!", "email": "adam2@mail.com" }
+
+###
+
+POST http://127.0.0.1:8000/login 
+Content-Type: application/json
+
+{ "email": "adam@mail.com", "password": "Pass1234!" }
+
+###
+
+POST http://127.0.0.1:8000/auctions/create
+Content-Type: application/json
+Authorization: token xxx
+
+{"name": "auction5", "description": "First test auction.", "starting_price": 100}
+
+###
+
+GET http://127.0.0.1:8000/auctions/
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8000/auctions/?name=auction3
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8000/auctions/?min_price=55&max_price=80
+Content-Type: application/json
+
+###
+GET http://127.0.0.1:8000/auctions/?ordering=-current_price
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8000/auctions/?ordering=current_price
+Content-Type: application/json
+
+###
+
+GET http://127.0.0.1:8000/auctions/4
+Content-Type: application/json
+
+###
+
+POST http://127.0.0.1:8000/auctions/1/bids/create/
+Content-Type: application/json
+Authorization: token xxx
+
+{"amount": 230}
+
+###
+
+GET http://127.0.0.1:8000/auctions/1/bids/
+Content-Type: application/json

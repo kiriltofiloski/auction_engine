@@ -1,0 +1,51 @@
+services:
+
+  # Redis
+  redis:
+    image: redis
+    container_name: redis
+
+  # Database Postgres
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: postgres_db
+
+  # Django Application
+  app:
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - 8000:8000
+    image: app:django
+    container_name: django_app
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db 
+      
+  # Celery
+  celery_worker:
+    build: .
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/django
+    depends_on:
+      - db
+      - redis
+      - app
+
+  celery_beat:
+    build: .
+    command: celery -A core beat --loglevel=info
+    volumes:
+      - .:/django
+    depends_on:
+      - db
+      - redis
+      - app
